@@ -1,4 +1,6 @@
 import { execSync } from "node:child_process";
+import fs from "node:fs";
+import path from "node:path";
 import cron from "node-cron";
 
 const BUCKET = process.env.REPORT_BUCKET || "reports_bucket_26";
@@ -7,8 +9,10 @@ const SYNC_INTERVAL = process.env.SYNC_INTERVAL || "*/5 * * * *"; // every 5 min
 
 function runSync() {
   const source = `gs://${BUCKET}/reports/`;
-  const dest = `${LOCAL_DIR}\\reports\\`;
+  const dest = path.join(LOCAL_DIR, "reports");
   const timestamp = new Date().toISOString();
+
+  fs.mkdirSync(dest, { recursive: true });
 
   console.log(`[${timestamp}] Syncing ${source} → ${dest}`);
 
@@ -29,7 +33,7 @@ export function startSync() {
     process.exit(1);
   }
 
-  console.log(`Sync scheduled: "${SYNC_INTERVAL}" | gs://${BUCKET}/reports/ → ${LOCAL_DIR}\\reports\\`);
+  console.log(`Sync scheduled: "${SYNC_INTERVAL}" | gs://${BUCKET}/reports/ → ${path.join(LOCAL_DIR, "reports")}`);
 
   // Run immediately on startup
   runSync();
