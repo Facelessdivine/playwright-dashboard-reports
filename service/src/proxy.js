@@ -24,8 +24,8 @@ const CONTENT_TYPES = {
   ".xml": "application/xml",
 };
 
-router.get("/*", (req, res) => {
-  const reqPath = req.params[0];
+router.get("/*splat", (req, res) => {
+  const reqPath = req.params.splat.join("/");
   if (!reqPath) return res.status(400).json({ error: "No file path" });
 
   const localDir = getLocalDir();

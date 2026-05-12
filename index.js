@@ -21,7 +21,7 @@ app.use("/files", proxyRouter);
 // Dashboard SPA
 if (fs.existsSync(path.join(DASHBOARD_DIR, "index.html"))) {
   app.use(express.static(DASHBOARD_DIR));
-  app.get("*", (req, res) => {
+  app.get("/*splat", (req, res) => {
     res.sendFile(path.join(DASHBOARD_DIR, "index.html"));
   });
 } else {
