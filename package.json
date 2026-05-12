@@ -7,7 +7,7 @@
     "start": "node index.js",
     "dev": "node --watch index.js",
     "build:dashboard": "cd dashboard && npm install && npm run build",
-    "setup": "npm ci && npm run build:dashboard"
+    "setup": "npm install && npm run build:dashboard"
   },
   "dependencies": {
     "@google-cloud/storage": "^7.19.0",
