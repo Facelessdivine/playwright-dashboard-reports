@@ -1,0 +1,68 @@
+h1 {
+  font-size: 24px;
+  margin-bottom: 24px;
+}
+
+.project-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 16px;
+}
+
+.project-card {
+  display: block;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 20px;
+  color: var(--text);
+  transition: border-color 0.15s;
+}
+.project-card:hover {
+  border-color: var(--accent);
+  text-decoration: none;
+}
+
+.project-card h2 {
+  font-size: 16px;
+  margin-bottom: 8px;
+}
+
+.project-stats {
+  font-size: 13px;
+  color: var(--text-muted);
+  display: flex;
+  gap: 16px;
+  margin-bottom: 12px;
+}
+
+.project-latest {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+.latest-branch {
+  font-size: 13px;
+  color: var(--text-muted);
+}
+
+.project-bar {
+  display: flex;
+  height: 4px;
+  border-radius: 2px;
+  overflow: hidden;
+  background: var(--border);
+}
+.bar-passed { background: var(--green); }
+.bar-failed { background: var(--red); }
+
+.loading,
+.error,
+.empty {
+  padding: 40px;
+  text-align: center;
+  color: var(--text-muted);
+}
+.error { color: var(--red); }

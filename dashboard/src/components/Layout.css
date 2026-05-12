@@ -1,0 +1,43 @@
+.layout {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  padding: 16px 32px;
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+}
+
+.logo {
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--text);
+}
+.logo:hover {
+  text-decoration: none;
+  color: var(--accent);
+}
+
+.breadcrumbs {
+  font-size: 14px;
+  color: var(--text-muted);
+}
+.breadcrumbs .sep {
+  margin: 0 8px;
+}
+.breadcrumbs .current {
+  color: var(--text);
+}
+
+.main {
+  flex: 1;
+  padding: 32px;
+  max-width: 1200px;
+  width: 100%;
+  margin: 0 auto;
+}
