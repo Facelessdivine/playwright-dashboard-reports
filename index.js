@@ -46,14 +46,18 @@ pre{background:#1e1e1e;color:#d4d4d4;padding:16px;padding-right:50px;border-radi
 .copy-btn.copied{background:#2ea043}
 .step{margin:24px 0}.note{color:#666;font-size:14px}</style></head>
 <body><h1>Install Certificate</h1>
-<p>Run this <b>one command</b> in PowerShell (no admin required) to trust the dashboard certificate:</p>
-<div class="cmd-block"><pre id="cmd">Invoke-WebRequest -Uri "http://${httpHost}/cert" -OutFile "$env:TEMP\\pw-reports.pem"; certutil -addstore -user Root "$env:TEMP\\pw-reports.pem"; Remove-Item "$env:TEMP\\pw-reports.pem"</pre><button class="copy-btn" id="copyBtn">Copy</button></div>
-<script>document.getElementById('copyBtn').addEventListener('click',function(){var t=document.getElementById('cmd').textContent;var a=document.createElement('textarea');a.value=t;a.style.position='fixed';a.style.opacity='0';document.body.appendChild(a);a.select();document.execCommand('copy');document.body.removeChild(a);var b=this;b.textContent='Copied!';b.classList.add('copied');setTimeout(function(){b.textContent='Copy';b.classList.remove('copied')},2000)})</script>
-<p class="note">This downloads the certificate, installs it for your user, and cleans up. One-time only, no admin permissions needed.</p>
+<h2>Windows (PowerShell)</h2>
+<div class="cmd-block"><pre id="cmdWin">Invoke-WebRequest -Uri "http://${httpHost}/cert" -OutFile "$env:TEMP\\pw-reports.pem"; certutil -addstore -user Root "$env:TEMP\\pw-reports.pem"; Remove-Item "$env:TEMP\\pw-reports.pem"</pre><button class="copy-btn" data-target="cmdWin">Copy</button></div>
+<h2>macOS (Terminal)</h2>
+<div class="cmd-block"><pre id="cmdMac">curl -o /tmp/pw-reports.pem http://${httpHost}/cert && sudo security add-trusted-cert -d -r trustRoot -k /Library/Keychains/System.keychain /tmp/pw-reports.pem && rm /tmp/pw-reports.pem</pre><button class="copy-btn" data-target="cmdMac">Copy</button></div>
+<p class="note">One-time only. Windows: no admin needed. macOS: requires sudo password.</p>
+<script>document.querySelectorAll('.copy-btn').forEach(function(btn){btn.addEventListener('click',function(){var t=document.getElementById(this.dataset.target).textContent;var a=document.createElement('textarea');a.value=t;a.style.position='fixed';a.style.opacity='0';document.body.appendChild(a);a.select();document.execCommand('copy');document.body.removeChild(a);var b=this;b.textContent='Copied!';b.classList.add('copied');setTimeout(function(){b.textContent='Copy';b.classList.remove('copied')},2000)})})</script>
 <div class="step"><h3>Then restart your browser and access:</h3>
 <p><a href="https://${host.replace(`:${PORT}`, `:${HTTPS_PORT}`)}">https://${host.replace(`:${PORT}`, `:${HTTPS_PORT}`)}</a></p></div>
 <div class="step"><h3>Or download manually:</h3>
-<p><a href="/cert">Download cert.pem</a> → then run: <code>certutil -addstore -user Root cert.pem</code></p></div>
+<p><a href="/cert">Download cert.pem</a></p>
+<p>Windows: <code>certutil -addstore -user Root cert.pem</code></p>
+<p>macOS: <code>sudo security add-trusted-cert -d -r trustRoot -k /Library/Keychains/System.keychain cert.pem</code></p></div>
 </body></html>`);
 });
 
