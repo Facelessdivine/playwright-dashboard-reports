@@ -43,7 +43,7 @@ pre{background:#1e1e1e;color:#d4d4d4;padding:16px;border-radius:8px;overflow-x:a
 .step{margin:24px 0}.note{color:#666;font-size:14px}</style></head>
 <body><h1>Install Certificate</h1>
 <p>Run this <b>one command</b> in PowerShell <b>as Administrator</b> to trust the dashboard certificate:</p>
-<pre>powershell -Command "Invoke-WebRequest -Uri 'http://${httpHost}/cert' -OutFile \\$env:TEMP\\pw-reports.pem; certutil -addstore Root \\$env:TEMP\\pw-reports.pem; Remove-Item \\$env:TEMP\\pw-reports.pem"</pre>
+<pre>Invoke-WebRequest -Uri "http://${httpHost}/cert" -OutFile "$env:TEMP\\pw-reports.pem"; certutil -addstore Root "$env:TEMP\\pw-reports.pem"; Remove-Item "$env:TEMP\\pw-reports.pem"</pre>
 <p class="note">This downloads the certificate, installs it in Trusted Root, and cleans up. One-time only.</p>
 <div class="step"><h3>Then restart your browser and access:</h3>
 <p><a href="https://${host.replace(`:${PORT}`, `:${HTTPS_PORT}`)}">https://${host.replace(`:${PORT}`, `:${HTTPS_PORT}`)}</a></p></div>
