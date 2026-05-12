@@ -23,6 +23,7 @@ export default function Layout({ children }) {
             ))}
           </nav>
         )}
+        <a href="/install" className="install-link">Install Certificate</a>
       </header>
       <main className="main">{children}</main>
     </div>

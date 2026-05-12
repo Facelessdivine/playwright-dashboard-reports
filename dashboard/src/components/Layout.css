@@ -13,6 +13,20 @@
   border-bottom: 1px solid var(--border);
 }
 
+.install-link {
+  margin-left: auto;
+  font-size: 13px;
+  color: var(--text-muted);
+  padding: 4px 12px;
+  border: 1px solid var(--border);
+  border-radius: 4px;
+}
+.install-link:hover {
+  color: var(--accent);
+  border-color: var(--accent);
+  text-decoration: none;
+}
+
 .logo {
   font-size: 18px;
   font-weight: 700;
