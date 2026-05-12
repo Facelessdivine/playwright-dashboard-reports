@@ -39,11 +39,15 @@ app.get("/install", (req, res) => {
   res.send(`<!DOCTYPE html><html><head><title>Install Certificate</title>
 <style>body{font-family:sans-serif;max-width:700px;margin:40px auto;padding:0 20px}
 code{background:#f0f0f0;padding:2px 8px;border-radius:4px;font-size:14px}
-pre{background:#1e1e1e;color:#d4d4d4;padding:16px;border-radius:8px;overflow-x:auto}
+.cmd-block{position:relative}
+pre{background:#1e1e1e;color:#d4d4d4;padding:16px;padding-right:50px;border-radius:8px;overflow-x:auto}
+.copy-btn{position:absolute;top:8px;right:8px;background:#444;color:#fff;border:none;padding:6px 12px;border-radius:4px;cursor:pointer;font-size:13px}
+.copy-btn:hover{background:#666}
+.copy-btn.copied{background:#2ea043}
 .step{margin:24px 0}.note{color:#666;font-size:14px}</style></head>
 <body><h1>Install Certificate</h1>
 <p>Run this <b>one command</b> in PowerShell <b>as Administrator</b> to trust the dashboard certificate:</p>
-<pre>Invoke-WebRequest -Uri "http://${httpHost}/cert" -OutFile "$env:TEMP\\pw-reports.pem"; certutil -addstore Root "$env:TEMP\\pw-reports.pem"; Remove-Item "$env:TEMP\\pw-reports.pem"</pre>
+<div class="cmd-block"><pre id="cmd">Invoke-WebRequest -Uri "http://${httpHost}/cert" -OutFile "$env:TEMP\\pw-reports.pem"; certutil -addstore Root "$env:TEMP\\pw-reports.pem"; Remove-Item "$env:TEMP\\pw-reports.pem"</pre><button class="copy-btn" onclick="navigator.clipboard.writeText(document.getElementById('cmd').textContent).then(()=>{this.textContent='Copied!';this.classList.add('copied');setTimeout(()=>{this.textContent='Copy';this.classList.remove('copied')},2000)})">Copy</button></div>
 <p class="note">This downloads the certificate, installs it in Trusted Root, and cleans up. One-time only.</p>
 <div class="step"><h3>Then restart your browser and access:</h3>
 <p><a href="https://${host.replace(`:${PORT}`, `:${HTTPS_PORT}`)}">https://${host.replace(`:${PORT}`, `:${HTTPS_PORT}`)}</a></p></div>
