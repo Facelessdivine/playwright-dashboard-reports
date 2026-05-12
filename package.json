@@ -6,7 +6,7 @@
   "scripts": {
     "start": "node index.js",
     "dev": "node --watch index.js",
-    "build:dashboard": "cd dashboard && npm ci && npm run build",
+    "build:dashboard": "cd dashboard && npm install && npm run build",
     "setup": "npm ci && npm run build:dashboard"
   },
   "dependencies": {
