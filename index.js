@@ -23,6 +23,35 @@ app.get("/health", (req, res) => res.json({ status: "ok" }));
 app.use("/api", apiRouter);
 app.use("/files", proxyRouter);
 
+// Serve certificate for easy install from any machine
+app.get("/cert", (req, res) => {
+  const certPath = path.join(CERTS_DIR, "cert.pem");
+  if (!fs.existsSync(certPath)) return res.status(404).send("No certificate generated yet.");
+  res.setHeader("Content-Type", "application/x-pem-file");
+  res.setHeader("Content-Disposition", "attachment; filename=playwright-reports.pem");
+  fs.createReadStream(certPath).pipe(res);
+});
+
+app.get("/install", (req, res) => {
+  const host = req.headers.host || `localhost:${PORT}`;
+  const httpHost = host.replace(`:${HTTPS_PORT}`, `:${PORT}`);
+  res.setHeader("Content-Type", "text/html");
+  res.send(`<!DOCTYPE html><html><head><title>Install Certificate</title>
+<style>body{font-family:sans-serif;max-width:700px;margin:40px auto;padding:0 20px}
+code{background:#f0f0f0;padding:2px 8px;border-radius:4px;font-size:14px}
+pre{background:#1e1e1e;color:#d4d4d4;padding:16px;border-radius:8px;overflow-x:auto}
+.step{margin:24px 0}.note{color:#666;font-size:14px}</style></head>
+<body><h1>Install Certificate</h1>
+<p>Run this <b>one command</b> in PowerShell <b>as Administrator</b> to trust the dashboard certificate:</p>
+<pre>powershell -Command "Invoke-WebRequest -Uri 'http://${httpHost}/cert' -OutFile \\$env:TEMP\\pw-reports.pem; certutil -addstore Root \\$env:TEMP\\pw-reports.pem; Remove-Item \\$env:TEMP\\pw-reports.pem"</pre>
+<p class="note">This downloads the certificate, installs it in Trusted Root, and cleans up. One-time only.</p>
+<div class="step"><h3>Then restart your browser and access:</h3>
+<p><a href="https://${host.replace(`:${PORT}`, `:${HTTPS_PORT}`)}">https://${host.replace(`:${PORT}`, `:${HTTPS_PORT}`)}</a></p></div>
+<div class="step"><h3>Or download manually:</h3>
+<p><a href="/cert">Download cert.pem</a> → then run: <code>certutil -addstore Root cert.pem</code></p></div>
+</body></html>`);
+});
+
 // Dashboard SPA
 if (fs.existsSync(path.join(DASHBOARD_DIR, "index.html"))) {
   app.use(express.static(DASHBOARD_DIR));
